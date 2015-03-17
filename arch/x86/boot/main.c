@@ -139,6 +139,8 @@ void main(void)
 
 	/* Initialize the early-boot console */
 	console_init();
+	puts("[NICOL] Just after console_init in boot/main.c main, for early kernel print.\n");
+
 	if (cmdline_find_option_bool("debug"))
 		puts("early console in setup code\n");
 

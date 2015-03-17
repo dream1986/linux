@@ -121,6 +121,11 @@ void go_to_protected_mode(void)
 	/* Actual transition to protected mode... */
 	setup_idt();
 	setup_gdt();
+
+	/* code32_start 在arch/x86/boot/head.S中被默认定义为0x100000
+	 * 然后需要参照的就是arch/x86/boot/compressed/vmlinux.lds.S中的链接的入口
+	 * 函数所在的位置
+	 */
 	protected_mode_jump(boot_params.hdr.code32_start,
 			    (u32)&boot_params + (ds() << 4));
 }
