@@ -22,6 +22,12 @@
 
 /*
  * void protected_mode_jump(u32 entrypoint, u32 bootparams);
+ *
+ * 传入的实参是 boot_params.hdr.code32_start
+ *           (u32)&boot_params + (ds() << 4)
+ *
+ * 其entrypoint的实际位置在
+ *  arch/x86/boot/compressed/head_64.S  之 startup_32
  */
 GLOBAL(protected_mode_jump)
 	movl	%edx, %esi		# Pointer to boot_params table

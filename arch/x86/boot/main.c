@@ -183,5 +183,6 @@ void main(void)
 	set_video();
 
 	/* Do the last things and invoke protected mode */
+	// arch/x86/boot/pm.c
 	go_to_protected_mode();
 }

@@ -197,5 +197,12 @@ void __init x86_64_start_reservations(char *real_mode_data)
 
 	reserve_ebda_region();
 
+	/**
+	 * finally we will leave arch/x86
+	 * init/main.c welcoming us!
+	 */
+
+	early_printk("[NICOL] we are leaving arch/x86/kernel/head64.c\n");
+	early_printk("[NICOL] to linux/init/main.c start_kernel\n");
 	start_kernel();
 }

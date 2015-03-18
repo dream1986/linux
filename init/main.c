@@ -491,6 +491,9 @@ asmlinkage __visible void __init start_kernel(void)
 	char *command_line;
 	char *after_dashes;
 
+	pr_crit("[NICOL] in %s<%s:%d> begin to initialize in start_kernel!\n"
+		__FILE__, __FUNCTION__ , __LINE__);
+
 	/*
 	 * Need to run as early as possible, to initialize the
 	 * lockdep hash:

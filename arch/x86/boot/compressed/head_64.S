@@ -192,6 +192,11 @@ ENTRY(startup_32)
 	movl	$(X86_CR0_PG | X86_CR0_PE), %eax /* Enable Paging and Protected mode */
 	movl	%eax, %cr0
 
+    /**
+     * 上面先将startup_64的地址压入,进入保护模式之后,然后调用
+     * 下面的lret,那么就直接跳转到startup_64标号的地址位置执行了
+     */
+
 	/* Jump from 32bit compatibility mode into 64bit mode. */
 	lret
 ENDPROC(startup_32)
@@ -416,6 +421,8 @@ relocated:
 
 /*
  * Jump to the decompressed kernel.
+ * returned  
+ *  output = choose_kernel_location  据说是 arch/x86/boot/head_64.S startup_64
  */
 	jmp	*%rax
 

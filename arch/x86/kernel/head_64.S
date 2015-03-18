@@ -282,6 +282,12 @@ ENTRY(secondary_startup_64)
 	 *	REX.W + FF /5 JMP m16:64 Jump far, absolute indirect,
 	 *		address given in m16:64.
 	 */
+
+	/**
+	 *  initial_code == x86_64_start_kernel ???
+	 *  in arch/x86/kernel/head64.c
+	 */
+
 	movq	initial_code(%rip),%rax
 	pushq	$0		# fake return address to stop unwinder
 	pushq	$__KERNEL_CS	# set correct cs

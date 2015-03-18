@@ -391,6 +391,7 @@ asmlinkage __visible void *decompress_kernel(void *rmode, memptr heap,
 	cols = real_mode->screen_info.orig_video_cols;
 
 	console_init();
+	debug_putstr("Called in arch/x86/boot/compressed/misc.c ~ decompressed_kernel\n");
 	debug_putstr("early console in decompress_kernel\n");
 
 	free_mem_ptr     = heap;	/* Heap */

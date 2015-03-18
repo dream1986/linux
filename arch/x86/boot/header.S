@@ -15,6 +15,12 @@
  *
  */
 
+ /**
+  * 整个内核Boot引导的入口文件
+  * 在arch/x86/boot/setup.ld这个文件中,已经定义了ENTRY(_start)
+  * 这个宏,表面链接后整个boot的执行入口就是_start标号
+  */
+
 #include <asm/segment.h>
 #include <generated/utsrelease.h>
 #include <asm/boot.h>
@@ -287,8 +293,22 @@ vid_mode:	.word SVGA_MODE
 root_dev:	.word 0			/* Filled in by build.c */
 boot_flag:	.word 0xAA55
 
+    /**
+     * 这里写出了offset 512,是整个内核镜像前面的512字节的引导头部.
+     * 后续变量占用1+2+4+2+2+2+2=15个字节
+     * 但是貌似跟setup.ld有差异啊....???
+     */
 	# offset 512, entry point
 
+    /**
+     * 整个Kernel Boot的入口.通过执行
+     *  hexdump -C x86_64/boot/bzImage | head -n 20
+     * 可以发现,链接的二进制结果和这里的代码定义是吻合的.
+     */
+
+    /**
+     * POS-1  其实这里没有多少代码,主要是定义了很多的变量
+     */
 	.globl	_start
 _start:
 		# Explicitly enter this as bytes, or the assembler
@@ -452,6 +472,10 @@ handover_offset:	.long 0			# Filled in by build.c
 
 # End of setup header #####################################################
 
+    /**
+     * POS-2 work stack
+     */
+
 	.section ".entrytext", "ax"
 start_of_setup:
 # Force %es = %ds
@@ -492,7 +516,11 @@ start_of_setup:
 	pushw	$6f
 	lretw
 6:
-
+    /**
+     * 在setup.ld的结尾定义的signature段的一个标号
+     * setup_sig = .;
+     *           LONG(0x5a5aaa55)
+     */
 # Check signature at end of setup
 	cmpl	$0x5a5aaa55, setup_sig
 	jne	setup_bad
@@ -506,6 +534,13 @@ start_of_setup:
 	rep; stosl
 
 # Jump to C code (should not return)
+
+    /**
+     * POS-3
+     *
+     * arch/x86/boot/main.c
+     */
+
 	calll	main
 
 # Setup corrupt somehow...
